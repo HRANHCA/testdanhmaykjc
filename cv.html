@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo CV - KJC Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #B3E5FC, #F8BBD0);
+            min-height: 100vh;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            margin-left: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        nav a.active {
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        /* CV Builder Styles */
+        .cv-builder-title {
+            text-align: center;
+            color: white;
+            margin: 20px 0;
+            font-size: 32px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .cv-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .cv-form {
+            flex: 1;
+            min-width: 300px;
+            background-color: rgba(255,255,255,0.9);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .cv-preview {
+            flex: 1;
+            min-width: 300px;
+            background-color: rgba(255,255,255,0.9);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            max-height: 800px;
+            overflow-y: auto;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1a237e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+            font-size: 14px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid rgba(0,0,0,0.2);
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 2px rgba(74,144,226,0.2);
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* CV Template Styles - Updated to match the new design */
+        .cv-template-container {
+            max-width: 800px;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        
+        .background-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.08;
+            z-index: 0;
+            width: 80%;
+            max-width: 500px;
+        }
+        
+        .background-logo img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .cv-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cv-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+        
+        .cv-photo-placeholder {
+            width: 180px;
+            height: 220px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .cv-logo-placeholder {
+            width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #eee;
+            padding: 5px;
+        }
+        
+        .cv-logo-placeholder img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .cv-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .cv-section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #2c3e50;
+            text-transform: uppercase;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .cv-section-content {
+            margin-left: 15px;
+        }
+        
+        .cv-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 20px;
+        }
+        
+        .cv-info-item {
+            margin-bottom: 8px;
+            display: flex;
+        }
+        
+        .cv-info-label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .cv-info-value {
+            flex: 1;
+        }
+        
+        .cv-career-goals ul, .cv-work-experience ul {
+            list-style-type: none;
+            margin-left: 10px;
+        }
+        
+        .cv-career-goals li, .cv-work-experience li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .cv-career-goals li:before, .cv-work-experience li:before {
+            content: "•";
+            color: #3498db;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .cv-work-experience-item {
+            margin-bottom: 15px;
+        }
+        
+        .cv-work-experience-item h3 {
+            font-size: 15px;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .cv-skills {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .cv-skill-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .cv-skill-name {
+            font-weight: bold;
+            margin-right: 10px;
+            color: #555;
+        }
+        
+        .cv-personnel {
+            text-align: right;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .cv-footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background-color: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-decoration: none;
+            color: #333;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-primary {
+            background: #1a237e;
+            color: white;
+        }
+
+        /* Footer for CV Builder */
+        .cv-footer-page {
+            background: linear-gradient(135deg, #1a237e, #283593);
+            color: white;
+            padding: 50px 0 25px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: #FFD54F;
+        }
+
+        .footer-links {
+            list-style: none;
+            flex: 1;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: #FFD54F;
+            transform: translateX(5px);
+        }
+
+        .footer-contact p {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .social-links a:hover {
+            background: #FFD54F;
+            color: #1565C0;
+            transform: translateY(-3px) rotate(5deg);
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-top: 15px;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 14px;
+        }
+
+        .newsletter-btn {
+            background: #FFD54F;
+            color: #1565C0;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            background: #FFC107;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .cv-container {
+                flex-direction: column;
+            }
+            
+            .cv-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .cv-info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cv-skills {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav li {
+                margin: 5px;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .newsletter-input, .newsletter-btn {
+                border-radius: 4px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="https://i.imgur.com/Y9iMYsI.png" alt="KJC Logo" class="logo">
+                <div class="logo-text">KJC Tools</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Trang Chủ</a></li>
+                    <li><a href="typing.html">Kiểm Tra Tốc Độ Gõ</a></li>
+                    <li><a href="cv.html" class="active">Tạo CV</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <h1 class="cv-builder-title">Tạo CV Theo Mẫu KJC</h1>
+
+        <div class="cv-container">
+            <div class="cv-form">
+                <div class="form-section">
+                    <h3 class="section-title">📸 Thông Tin Cá Nhân</h3>
+                    <div class="form-group">
+                        <label for="name">Họ và Tên</label>
+                        <input type="text" id="name" placeholder="Nhập họ và tên đầy đủ">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="birthdate">Ngày sinh</label>
+                            <input type="date" id="birthdate">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Giới tính</label>
+                            <select id="gender">
+                                <option value="">Chọn giới tính</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id-card">CCCD</label>
+                            <input type="text" id="id-card" placeholder="Số CCCD">
+                        </div>
+                        <div class="form-group">
+                            <label for="id-issue-place">Nơi cấp</label>
+                            <input type="text" id="id-issue-place" placeholder="Nơi cấp CCCD">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nationality">Quốc tịch</label>
+                            <input type="text" id="nationality" value="Việt Nam">
+                        </div>
+                        <div class="form-group">
+                            <label for="ethnicity">Dân tộc</label>
+                            <input type="text" id="ethnicity" value="Kinh">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Địa chỉ</label>
+                        <textarea id="address" placeholder="Nhập địa chỉ đầy đủ"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">🎯 Mục Tiêu Nghề Nghiệp</h3>
+                    <div class="form-group">
+                        <label for="career-goals">Mục tiêu (mỗi mục tiêu trên một dòng)</label>
+                        <textarea id="career-goals" placeholder="Mỗi mục tiêu trên một dòng riêng biệt">Mong muốn làm trong môi trường chuyên nghiệp và bình đẳng.
+Hoàn thành công việc và chỉ tiêu của công ty.
+Muốn gắn bó lâu dài với công ty.
+Có thu nhập ổn định.</textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">🎓 Học Vấn</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="education-level">Trình độ</label>
+                            <input type="text" id="education-level" placeholder="VD: THPT, Đại học">
+                        </div>
+                        <div class="form-group">
+                            <label for="education-time">Thời gian</label>
+                            <input type="text" id="education-time" placeholder="VD: 2015-2018">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="school">Trường</label>
+                        <input type="text" id="school" placeholder="Tên trường" value="THPT QUẢNG HÀ">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">💼 Kinh Nghiệm Làm Việc</h3>
+                    <div class="form-group">
+                        <label for="company">Công ty</label>
+                        <input type="text" id="company" placeholder="Tên công ty">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="work-time">Thời gian</label>
+                            <input type="text" id="work-time" placeholder="VD: 2020-2022">
+                        </div>
+                        <div class="form-group">
+                            <label for="position">Vị trí</label>
+                            <input type="text" id="position" placeholder="Vị trí công việc">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="work-description">Mô tả công việc</label>
+                        <textarea id="work-description" placeholder="Mô tả chi tiết công việc"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">💻 Tin Học Văn Phòng</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="word-skill">Word</label>
+                            <select id="word-skill">
+                                <option value="Cơ bản">Cơ bản</option>
+                                <option value="Trung bình" selected>Trung bình</option>
+                                <option value="Khá">Khá</option>
+                                <option value="Tốt">Tốt</option>
+                                <option value="Chuyên gia">Chuyên gia</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="excel-skill">Excel</label>
+                            <select id="excel-skill">
+                                <option value="Cơ bản">Cơ bản</option>
+                                <option value="Trung bình" selected>Trung bình</option>
+                                <option value="Khá">Khá</option>
+                                <option value="Tốt">Tốt</option>
+                                <option value="Chuyên gia">Chuyên gia</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">👤 Nhân Sự</h3>
+                    <div class="form-group">
+                        <label for="personnel">Người phụ trách</label>
+                        <input type="text" id="personnel" value="KSE POANH">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cv-preview">
+                <h2 style="text-align: center; margin-bottom: 20px; color: #1a237e;">Xem Trước CV</h2>
+                <div class="cv-template-container">
+                    <!-- Logo KJC làm nền -->
+                    <div class="background-logo">
+                        <img src="https://i.imgur.com/Y9iMYsI.png" alt="Logo KJC Background">
+                    </div>
+                    
+                    <div class="cv-content">
+                        <div class="cv-header">
+                            <div class="cv-photo-placeholder">
+                                Ảnh ứng viên
+                            </div>
+                            <div class="cv-logo-placeholder">
+                                <img src="https://i.imgur.com/Y9iMYsI.png" alt="Logo Công Ty">
+                            </div>
+                        </div>
+                        
+                        <div class="cv-section">
+                            <h2 class="cv-section-title">THÔNG TIN ỨNG VIÊN</h2>
+                            <div class="cv-section-content">
+                                <div class="cv-info-grid">
+                                    <div class="cv-info-item">
+                                        <span class="cv-info-label">Họ và tên:</span>
+                                        <span class="cv-info-value" id="preview-name">___________________</span>
+                                    </div>
+                                    <div class="cv-info-item">
+                                        <span class="cv-info-label">Ngày sinh:</span>
+                                        <span class="cv-info-value" id="preview-birthdate">___________________</span>
+                                    </div>
+                                    <div class="cv-info-item">
+                                        <span class="cv-info-label">Giới tính:</span>
+                                        <span class="cv-info-value" id="preview-gender">___________________</span>
+                                    </div>
+                                    <div class="cv-info-item">
+                                        <span class="cv-info-label">CCCD:</span>
+                                        <span class="cv-info-value" id="preview-id">___________________</span>
+                                    </div>
+                                    <div class="cv-info-item">
+                                        <span class="cv-info-label">Nơi cấp:</span>
+                                        <span class="cv-info-value" id="preview-id-issue-place">Cục Cảnh Sát</span>
+                                    </div>
+                                    <div class="cv-info-item">
+                                        <span class="cv-info-label">Quốc tịch:</span>
+                                        <span class="cv-info-value" id="preview-nationality">Việt Nam</span>
+                                    </div>
+                                    <div class="cv-info-item">
+                                        <span class="cv-info-label">Dân tộc:</span>
+                                        <span class="cv-info-value" id="preview-ethnicity">Kinh</span>
+                                    </div>
+                                    <div class="cv-info-item">
+                                        <span class="cv-info-label">Địa chỉ:</span>
+                                        <span class="cv-info-value" id="preview-address">___________________</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="cv-section cv-career-goals">
+                            <h2 class="cv-section-title">MỤC TIÊU NGHỀ NGHIỆP</h2>
+                            <div class="cv-section-content">
+                                <ul id="preview-career-goals">
+                                    <li>Mong muốn làm trong môi trường chuyên nghiệp và bình đẳng.</li>
+                                    <li>Hoàn thành công việc và chỉ tiêu của công ty.</li>
+                                    <li>Muốn gắn bó lâu dài với công ty.</li>
+                                    <li>Có thu nhập ổn định.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="cv-section">
+                            <h2 class="cv-section-title">HỌC VẤN</h2>
+                            <div class="cv-section-content">
+                                <div class="cv-info-grid">
+                                    <div class="cv-info-item">
+                                        <span class="cv-info-label">Trình độ:</span>
+                                        <span class="cv-info-value" id="preview-education-level">___________________</span>
+                                    </div>
+                                    <div class="cv-info-item">
+                                        <span class="cv-info-label">Thời gian:</span>
+                                        <span class="cv-info-value" id="preview-education-time">___________________</span>
+                                    </div>
+                                    <div class="cv-info-item">
+                                        <span class="cv-info-label">Trường:</span>
+                                        <span class="cv-info-value" id="preview-school">THPT QUẢNG HÀ</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="cv-section cv-work-experience">
+                            <h2 class="cv-section-title">KINH NGHIỆM LÀM VIỆC</h2>
+                            <div class="cv-section-content">
+                                <div class="cv-work-experience-item">
+                                    <h3 id="preview-company">CÔNG TY</h3>
+                                    <ul>
+                                        <li><span class="cv-info-label">Thời gian:</span> <span id="preview-work-time">___________________</span></li>
+                                        <li><span class="cv-info-label">Vị trí:</span> <span id="preview-position">___________________</span></li>
+                                        <li><span class="cv-info-label">Mô tả công việc:</span> <span id="preview-work-description">___________________</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="cv-section">
+                            <h2 class="cv-section-title">TIN HỌC VĂN PHÒNG</h2>
+                            <div class="cv-section-content">
+                                <div class="cv-skills">
+                                    <div class="cv-skill-item">
+                                        <span class="cv-skill-name">WORD:</span>
+                                        <span id="preview-word-skill">TRUNG BÌNH</span>
+                                    </div>
+                                    <div class="cv-skill-item">
+                                        <span class="cv-skill-name">EXCEL:</span>
+                                        <span id="preview-excel-skill">TRUNG BÌNH</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="cv-personnel" id="preview-personnel">
+                            NHÂN SỰ: KSE POANH
+                        </div>
+                        
+                        <div class="cv-footer">
+                            CV Mẫu KJC
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="btn btn-primary" id="generate-pdf-btn">
+                <span>📄</span> Tạo PDF CV
+            </button>
+            <button class="btn" id="reset-btn">
+                <span>🔄</span> Làm Mới
+            </button>
+            <a href="index.html" class="btn">
+                <span>🏠</span> Về Trang Chủ
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer for CV Builder -->
+    <footer class="cv-footer-page">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Về KJC Tools</h3>
+                <p>Chuyên cung cấp các công cụ tạo CV chuyên nghiệp và kiểm tra kỹ năng giúp bạn phát triển sự nghiệp.</p>
+                <div class="social-links">
+                    <a href="#" title="Facebook">📘</a>
+                    <a href="#" title="Twitter">🐦</a>
+                    <a href="#" title="LinkedIn">💼</a>
+                    <a href="#" title="GitHub">💻</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Công Cụ</h3>
+                <ul class="footer-links">
+                    <li><a href="typing.html">🧠 Kiểm tra tốc độ gõ</a></li>
+                    <li><a href="cv.html">📄 Tạo CV chuyên nghiệp</a></li>
+                    <li><a href="#">📊 Quản lý công việc</a></li>
+                    <li><a href="#">⏰ Theo dõi thời gian</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Hỗ Trợ</h3>
+                <ul class="footer-links">
+                    <li><a href="#">❓ Trung tâm trợ giúp</a></li>
+                    <li><a href="#">📖 Hướng dẫn sử dụng</a></li>
+                    <li><a href="#">💡 Câu hỏi thường gặp</a></li>
+                    <li><a href="#">📞 Liên hệ hỗ trợ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Đăng Ký Nhận Tin</h3>
+                <p>Nhận thông báo về các tính năng mới và mẹo sử dụng hiệu quả.</p>
+                <div class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Email của bạn">
+                    <button class="newsletter-btn">Đăng ký</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2025 KJC Tools. Tất cả các quyền được bảo lưu.</p>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const nameInput = document.getElementById('name');
+        const birthdateInput = document.getElementById('birthdate');
+        const genderInput = document.getElementById('gender');
+        const idCardInput = document.getElementById('id-card');
+        const idIssuePlaceInput = document.getElementById('id-issue-place');
+        const nationalityInput = document.getElementById('nationality');
+        const ethnicityInput = document.getElementById('ethnicity');
+        const addressInput = document.getElementById('address');
+        const careerGoalsInput = document.getElementById('career-goals');
+        const educationLevelInput = document.getElementById('education-level');
+        const educationTimeInput = document.getElementById('education-time');
+        const schoolInput = document.getElementById('school');
+        const companyInput = document.getElementById('company');
+        const workTimeInput = document.getElementById('work-time');
+        const positionInput = document.getElementById('position');
+        const workDescriptionInput = document.getElementById('work-description');
+        const wordSkillInput = document.getElementById('word-skill');
+        const excelSkillInput = document.getElementById('excel-skill');
+        const personnelInput = document.getElementById('personnel');
+        
+        const previewName = document.getElementById('preview-name');
+        const previewBirthdate = document.getElementById('preview-birthdate');
+        const previewGender = document.getElementById('preview-gender');
+        const previewId = document.getElementById('preview-id');
+        const previewIdIssuePlace = document.getElementById('preview-id-issue-place');
+        const previewNationality = document.getElementById('preview-nationality');
+        const previewEthnicity = document.getElementById('preview-ethnicity');
+        const previewAddress = document.getElementById('preview-address');
+        const previewCareerGoals = document.getElementById('preview-career-goals');
+        const previewEducationLevel = document.getElementById('preview-education-level');
+        const previewEducationTime = document.getElementById('preview-education-time');
+        const previewSchool = document.getElementById('preview-school');
+        const previewCompany = document.getElementById('preview-company');
+        const previewWorkTime = document.getElementById('preview-work-time');
+        const previewPosition = document.getElementById('preview-position');
+        const previewWorkDescription = document.getElementById('preview-work-description');
+        const previewWordSkill = document.getElementById('preview-word-skill');
+        const previewExcelSkill = document.getElementById('preview-excel-skill');
+        const previewPersonnel = document.getElementById('preview-personnel');
+        
+        const generatePdfButton = document.getElementById('generate-pdf-btn');
+        const resetButton = document.getElementById('reset-btn');
+
+        // Format date for display
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN');
+        }
+
+        // Real-time preview updates
+        nameInput.addEventListener('input', function() {
+            previewName.textContent = this.value || '___________________';
+        });
+
+        birthdateInput.addEventListener('input', function() {
+            previewBirthdate.textContent = formatDate(this.value) || '___________________';
+        });
+
+        genderInput.addEventListener('change', function() {
+            previewGender.textContent = this.value || '___________________';
+        });
+
+        idCardInput.addEventListener('input', function() {
+            previewId.textContent = this.value || '___________________';
+        });
+
+        idIssuePlaceInput.addEventListener('input', function() {
+            previewIdIssuePlace.textContent = this.value || 'Cục Cảnh Sát';
+        });
+
+        nationalityInput.addEventListener('input', function() {
+            previewNationality.textContent = this.value || 'Việt Nam';
+        });
+
+        ethnicityInput.addEventListener('input', function() {
+            previewEthnicity.textContent = this.value || 'Kinh';
+        });
+
+        addressInput.addEventListener('input', function() {
+            previewAddress.textContent = this.value || '___________________';
+        });
+
+        careerGoalsInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                const goals = this.value.split('\n')
+                    .filter(goal => goal.trim())
+                    .map(goal => `<li>${goal.trim()}</li>`)
+                    .join('');
+                previewCareerGoals.innerHTML = goals;
+            } else {
+                previewCareerGoals.innerHTML = `
+                    <li>Mong muốn làm trong môi trường chuyên nghiệp và bình đẳng.</li>
+                    <li>Hoàn thành công việc và chỉ tiêu của công ty.</li>
+                    <li>Muốn gắn bó lâu dài với công ty.</li>
+                    <li>Có thu nhập ổn định.</li>
+                `;
+            }
+        });
+
+        educationLevelInput.addEventListener('input', function() {
+            previewEducationLevel.textContent = this.value || '___________________';
+        });
+
+        educationTimeInput.addEventListener('input', function() {
+            previewEducationTime.textContent = this.value || '___________________';
+        });
+
+        schoolInput.addEventListener('input', function() {
+            previewSchool.textContent = this.value || 'THPT QUẢNG HÀ';
+        });
+
+        companyInput.addEventListener('input', function() {
+            previewCompany.textContent = this.value ? this.value.toUpperCase() : 'CÔNG TY';
+        });
+
+        workTimeInput.addEventListener('input', function() {
+            previewWorkTime.textContent = this.value || '___________________';
+        });
+
+        positionInput.addEventListener('input', function() {
+            previewPosition.textContent = this.value || '___________________';
+        });
+
+        workDescriptionInput.addEventListener('input', function() {
+            previewWorkDescription.textContent = this.value || '___________________';
+        });
+
+        wordSkillInput.addEventListener('change', function() {
+            previewWordSkill.textContent = this.value || 'TRUNG BÌNH';
+        });
+
+        excelSkillInput.addEventListener('change', function() {
+            previewExcelSkill.textContent = this.value || 'TRUNG BÌNH';
+        });
+
+        personnelInput.addEventListener('input', function() {
+            previewPersonnel.textContent = `NHÂN SỰ: ${this.value || 'KSE POANH'}`;
+        });
+
+        generatePdfButton.addEventListener('click', function() {
+            alert('Tính năng tạo PDF sẽ được triển khai trong phiên bản tiếp theo. Trong ứng dụng thực tế, tính năng này sẽ sử dụng thư viện như jsPDF.');
+        });
+
+        resetButton.addEventListener('click', function() {
+            // Reset all form inputs
+            document.querySelectorAll('input, textarea, select').forEach(input => {
+                if (input.type !== 'button') {
+                    if (input.id === 'nationality') {
+                        input.value = 'Việt Nam';
+                    } else if (input.id === 'ethnicity') {
+                        input.value = 'Kinh';
+                    } else if (input.id === 'school') {
+                        input.value = 'THPT QUẢNG HÀ';
+                    } else if (input.id === 'word-skill' || input.id === 'excel-skill') {
+                        input.value = 'Trung bình';
+                    } else if (input.id === 'personnel') {
+                        input.value = 'KSE POANH';
+                    } else if (input.id === 'career-goals') {
+                        input.value = 'Mong muốn làm trong môi trường chuyên nghiệp và bình đẳng.\nHoàn thành công việc và chỉ tiêu của công ty.\nMuốn gắn bó lâu dài với công ty.\nCó thu nhập ổn định.';
+                    } else {
+                        input.value = '';
+                    }
+                }
+            });
+            
+            // Trigger input events to update preview
+            nameInput.dispatchEvent(new Event('input'));
+            birthdateInput.dispatchEvent(new Event('input'));
+            genderInput.dispatchEvent(new Event('change'));
+            idCardInput.dispatchEvent(new Event('input'));
+            idIssuePlaceInput.dispatchEvent(new Event('input'));
+            nationalityInput.dispatchEvent(new Event('input'));
+            ethnicityInput.dispatchEvent(new Event('input'));
+            addressInput.dispatchEvent(new Event('input'));
+            careerGoalsInput.dispatchEvent(new Event('input'));
+            educationLevelInput.dispatchEvent(new Event('input'));
+            educationTimeInput.dispatchEvent(new Event('input'));
+            schoolInput.dispatchEvent(new Event('input'));
+            companyInput.dispatchEvent(new Event('input'));
+            workTimeInput.dispatchEvent(new Event('input'));
+            positionInput.dispatchEvent(new Event('input'));
+            workDescriptionInput.dispatchEvent(new Event('input'));
+            wordSkillInput.dispatchEvent(new Event('change'));
+            excelSkillInput.dispatchEvent(new Event('change'));
+            personnelInput.dispatchEvent(new Event('input'));
+        });
+
+        // Initialize with sample data for demonstration
+        window.addEventListener('load', function() {
+            // Set sample data
+            nameInput.value = 'Nguyễn Văn A';
+            birthdateInput.value = '1995-05-15';
+            genderInput.value = 'Nam';
+            idCardInput.value = '012345678901';
+            idIssuePlaceInput.value = 'Cục Cảnh Sát';
+            addressInput.value = '123 Đường ABC, Quận 1, TP.HCM';
+            educationLevelInput.value = 'Đại học';
+            educationTimeInput.value = '2013 - 2017';
+            companyInput.value = 'Công ty Cổ phần KJC';
+            workTimeInput.value = '2020 - Hiện tại';
+            positionInput.value = 'Chuyên viên Nhân sự';
+            workDescriptionInput.value = 'Quản lý hồ sơ nhân sự, tuyển dụng, đào tạo nhân viên mới';
+            
+            // Trigger input events to update preview
+            nameInput.dispatchEvent(new Event('input'));
+            birthdateInput.dispatchEvent(new Event('input'));
+            genderInput.dispatchEvent(new Event('change'));
+            idCardInput.dispatchEvent(new Event('input'));
+            idIssuePlaceInput.dispatchEvent(new Event('input'));
+            addressInput.dispatchEvent(new Event('input'));
+            careerGoalsInput.dispatchEvent(new Event('input'));
+            educationLevelInput.dispatchEvent(new Event('input'));
+            educationTimeInput.dispatchEvent(new Event('input'));
+            companyInput.dispatchEvent(new Event('input'));
+            workTimeInput.dispatchEvent(new Event('input'));
+            positionInput.dispatchEvent(new Event('input'));
+            workDescriptionInput.dispatchEvent(new Event('input'));
+        });
+    </script>
+</body>
+</html>

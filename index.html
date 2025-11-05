@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KJC Tools - Trang Chủ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #B3E5FC, #F8BBD0);
+            min-height: 100vh;
+            color: #333;
+            transition: all 0.3s ease;
+            overflow: hidden; /* Ngăn scroll */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 60px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            top: 12px;
+            left: 0;
+            right: 0;
+            padding: 0;
+            z-index: 2;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            margin-left: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        nav a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        nav a.active {
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        /* Home Content */
+        .home-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            text-align: center;
+            /* Giảm chiều cao để phù hợp với màn hình */
+            min-height: calc(100vh - 280px);
+            padding: 10px 0;
+        }
+
+        .home-title {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 15px; /* Giảm khoảng cách */
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .home-subtitle {
+            font-size: 18px;
+            margin-bottom: 30px; /* Giảm khoảng cách */
+            color: rgba(255,255,255,0.95);
+            max-width: 600px;
+            line-height: 1.6;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 10px; /* Giảm khoảng cách để đưa phần thương hiệu lên cao hơn */
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background-color: rgba(255,255,255,0.95);
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-decoration: none;
+            color: #333;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        }
+
+        /* Company Logos Section - Đặt lên cao hơn */
+        .company-section {
+            margin-top: 0;
+            padding: 0;
+            width: 100%;
+            /* Đưa phần thương hiệu lên cao hơn bằng cách giảm margin-top */
+            margin-top: -10px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: white;
+            margin-bottom: 10px; /* Giảm khoảng cách */
+            font-size: 24px;
+            font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .logos-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px; /* Giảm khoảng cách */
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .logo-item {
+            width: 90px; /* Giảm kích thước */
+            height: 90px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            opacity: 0.6;
+            filter: grayscale(0.7);
+        }
+
+        .logo-item.active {
+            opacity: 1;
+            filter: grayscale(0);
+            transform: scale(1.2);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+        }
+
+        .logo-circle {
+            width: 50px; /* Giảm kích thước */
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+            margin-bottom: 6px; /* Giảm khoảng cách */
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .logo-item.active .logo-circle {
+            background: white;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+        }
+
+        .logo-icon {
+            width: 40px; /* Giảm kích thước */
+            height: 40px;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .logo-name {
+            color: white;
+            font-size: 12px; /* Giảm kích thước */
+            font-weight: 500;
+            text-align: center;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 15px 0; /* Giảm padding để đưa phần thương hiệu lên cao hơn */
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            margin-top: auto;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Background video styles */
+        .bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Overlay to improve text readability */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .home-title {
+                font-size: 36px;
+            }
+            
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav li {
+                margin: 5px;
+            }
+            
+            header {
+                position: static;
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px 0;
+            }
+
+            .container { 
+                padding-top: 20px; 
+                overflow-y: auto; /* Cho phép scroll trên mobile nếu cần */
+                max-height: 100vh;
+            }
+            
+            body {
+                overflow-y: auto; /* Cho phép scroll trên mobile nếu cần */
+            }
+            
+            .logos-container {
+                gap: 15px;
+            }
+            
+            .logo-item {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .logo-circle {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .logo-icon {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .home-content {
+                min-height: calc(100vh - 320px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logos-container {
+                gap: 10px;
+            }
+            
+            .logo-item {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .logo-circle {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .logo-icon {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .logo-name {
+                font-size: 11px;
+            }
+            
+            .home-title {
+                font-size: 28px;
+            }
+            
+            .home-subtitle {
+                font-size: 16px;
+            }
+            
+            .company-section {
+                margin-top: -5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background video -->
+    <video class="bg-video" autoplay muted loop playsinline aria-hidden="true" tabindex="-1">
+        <source src="Public/Video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <!-- Overlay to improve text readability -->
+    <div class="overlay"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="Public/Logo.png" alt="KJC Logo" class="logo">
+                <div class="logo-text">Test Đánh Máy KJC</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Trang Chủ</a></li>
+                    <li><a href="typing.html">Kiểm Tra Tốc Độ Đánh Mãy</a></li>
+                    <li><a href="cv.html">Tạo CV</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="home-content">
+            <h1 class="home-title">Công Cụ Năng Suất Cá Nhân</h1>
+            <p class="home-subtitle">Nâng cao năng suất làm việc của bạn với bộ công cụ hữu ích được thiết kế để giúp bạn làm việc thông minh hơn và nhanh hơn.</p>
+            <div class="button-container">
+                <a href="typing.html" class="btn">
+                    <span>🧠</span> Kiểm Tra Tốc Độ Gõ
+                </a>
+                <a href="cv.html" class="btn">
+                    <span>📄</span> Tạo CV
+                </a>
+            </div>
+        </section>
+
+        <footer>
+            <!-- Company Logos Section -->
+            <div class="company-section">
+                <h2 class="section-title">Thương Hiệu Thành Viên</h2>
+                <div class="logos-container">
+                    <div class="logo-item active">
+                        <div class="logo-circle">
+                            <img src="Public/RR88 Logo.png" alt="Brand 1" class="logo-icon">
+                        </div>
+                        <div class="logo-name">KJC Tech</div>
+                    </div>
+                    <div class="logo-item">
+                        <div class="logo-circle">
+                            <img src="Public/MM88 Logo.png" alt="Brand 2" class="logo-icon">
+                        </div>
+                        <div class="logo-name">KJC Design</div>
+                    </div>
+                    <div class="logo-item">
+                        <div class="logo-circle">
+                            <img src="Public/XX88 Logo.png" alt="Brand 3" class="logo-icon">
+                        </div>
+                        <div class="logo-name">KJC Solutions</div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Logo rotation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoItems = document.querySelectorAll('.logo-item');
+            let currentIndex = 0;
+            
+            // Function to activate next logo
+            function activateNextLogo() {
+                // Remove active class from all logos
+                logoItems.forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Add active class to current logo
+                logoItems[currentIndex].classList.add('active');
+                
+                // Move to next logo
+                currentIndex = (currentIndex + 1) % logoItems.length;
+            }
+            
+            // Start the rotation (3 seconds interval)
+            setInterval(activateNextLogo, 3000);
+            
+            // Initialize first logo as active
+            activateNextLogo();
+        });
+    </script>
+</body>
+</html>
