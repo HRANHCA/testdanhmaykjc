@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KJC Tools - Trang Chủ</title>
+    <title>Trang Chủ - Test Đánh Máy KJC</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -25,7 +25,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            padding-top: 60px;
+            padding-top: 100px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -33,16 +33,16 @@
             z-index: 1;
         }
 
-        /* Header Styles */
+       /* Header Styles */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: absolute;
-            top: 12px;
-            left: 0;
-            right: 0;
-            padding: 0;
+            position: fixed; /* <-- thay absolute bằng fixed */
+            top: 20px;
+            left: 200px;
+            right: 200px;
+            padding: 10px 30px;
             z-index: 2;
         }
 
@@ -53,11 +53,10 @@
         }
 
         .logo {
-            width: 50px;
+            width: 100px;
             height: 50px;
-            border-radius: 10px;
-            object-fit: cover;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            object-fit: contain;
+            display: block;
         }
 
         .logo-text {
@@ -136,103 +135,85 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 16px 32px;
-            background-color: rgba(255,255,255,0.95);
-            border: none;
-            border-radius: 12px;
-            font-size: 18px;
+            padding: 14px 35px;
+            background-color: transparent;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            font-size: 17px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             text-decoration: none;
-            color: #333;
+            color: white;
+            backdrop-filter: blur(5px);
         }
 
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            border-color: rgba(255,255,255,0.5);
+            background-color: rgba(255,255,255,0.1);
+            padding: 14px 40px;
         }
 
-        /* Company Logos Section - Đặt lên cao hơn */
+        /* Company Logo Styles */
         .company-section {
-            margin-top: 0;
-            padding: 0;
-            width: 100%;
-            /* Đưa phần thương hiệu lên cao hơn bằng cách giảm margin-top */
-            margin-top: -10px;
+            width: fit-content;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 15px 50px;
+            margin: 50px auto 20px;
+            border-radius: 100px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            bottom: 10px;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.05);
         }
 
         .section-title {
             text-align: center;
             color: white;
-            margin-bottom: 10px; /* Giảm khoảng cách */
-            font-size: 24px;
+            margin-bottom: 12px;
+            font-size: 16px;
             font-weight: 500;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .logos-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 20px; /* Giảm khoảng cách */
-            max-width: 1000px;
-            margin: 0 auto;
+            gap: 25px;
+            padding: 4px 12px;
         }
 
         .logo-item {
-            width: 90px; /* Giảm kích thước */
-            height: 90px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: all 0.4s ease;
-            opacity: 0.6;
-            filter: grayscale(0.7);
+            width: 120px;
+            height: 60px;
+            transition: all 0.5s ease;
+            position: relative;
+            transform: translateY(0);
+        }
+
+        .logo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: grayscale(100%) brightness(0.6);
+            transition: all 0.5s ease;
+            padding: 4px;
         }
 
         .logo-item.active {
-            opacity: 1;
-            filter: grayscale(0);
-            transform: scale(1.2);
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+            transform: translateY(-8px);
         }
 
-        .logo-circle {
-            width: 50px; /* Giảm kích thước */
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.18);
-            margin-bottom: 6px; /* Giảm khoảng cách */
-            transition: all 0.4s ease;
-            overflow: hidden;
-        }
-
-        .logo-item.active .logo-circle {
-            background: white;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
-        }
-
-        .logo-icon {
-            width: 40px; /* Giảm kích thước */
-            height: 40px;
-            object-fit: contain;
-            border-radius: 50%;
-        }
-
-        .logo-name {
-            color: white;
-            font-size: 12px; /* Giảm kích thước */
-            font-weight: 500;
-            text-align: center;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        .logo-item.active img {
+            filter: grayscale(0%) brightness(1.2);
+            transform: scale(1.03);
         }
 
         /* Footer */
@@ -392,21 +373,21 @@
             <nav>
                 <ul>
                     <li><a href="index.html" class="active">Trang Chủ</a></li>
-                    <li><a href="typing.html">Kiểm Tra Tốc Độ Đánh Mãy</a></li>
-                    <li><a href="cv.html">Tạo CV</a></li>
+                    <li><a href="typing.html">Kiểm Tra Đánh Máy</a></li>
+                    <li><a href="cv.html">Tạo CV Xin Việc</a></li>
                 </ul>
             </nav>
         </header>
 
         <section class="home-content">
-            <h1 class="home-title">Công Cụ Năng Suất Cá Nhân</h1>
-            <p class="home-subtitle">Nâng cao năng suất làm việc của bạn với bộ công cụ hữu ích được thiết kế để giúp bạn làm việc thông minh hơn và nhanh hơn.</p>
+            <h1 class="home-title">Liên Minh Quốc Tế KJC</h1>
+            <p class="home-subtitle">nơi hội tụ những thương hiệu giải trí hàng đầu, mang đến cơ hội làm việc uy tín và phát triển sự nghiệp</p>
             <div class="button-container">
                 <a href="typing.html" class="btn">
-                    <span>🧠</span> Kiểm Tra Tốc Độ Gõ
+                    <span>🧠</span> Kiểm Tra Đánh Máy
                 </a>
                 <a href="cv.html" class="btn">
-                    <span>📄</span> Tạo CV
+                    <span>📄</span> Tạo CV Xin Việc
                 </a>
             </div>
         </section>
@@ -414,25 +395,15 @@
         <footer>
             <!-- Company Logos Section -->
             <div class="company-section">
-                <h2 class="section-title">Thương Hiệu Thành Viên</h2>
                 <div class="logos-container">
                     <div class="logo-item active">
-                        <div class="logo-circle">
-                            <img src="Public/RR88 Logo.png" alt="Brand 1" class="logo-icon">
-                        </div>
-                        <div class="logo-name">KJC Tech</div>
+                        <img src="Public/RR88 Logo.png" alt="RR88" title="RR88">
                     </div>
                     <div class="logo-item">
-                        <div class="logo-circle">
-                            <img src="Public/MM88 Logo.png" alt="Brand 2" class="logo-icon">
-                        </div>
-                        <div class="logo-name">KJC Design</div>
+                        <img src="Public/MM88 Logo.png" alt="MM88" title="MM88">
                     </div>
                     <div class="logo-item">
-                        <div class="logo-circle">
-                            <img src="Public/XX88 Logo.png" alt="Brand 3" class="logo-icon">
-                        </div>
-                        <div class="logo-name">KJC Solutions</div>
+                        <img src="Public/XX88 Logo.png" alt="XX88" title="XX88">
                     </div>
                 </div>
             </div>
@@ -440,17 +411,13 @@
     </div>
 
     <script>
-        // Logo rotation functionality
         document.addEventListener('DOMContentLoaded', function() {
             const logoItems = document.querySelectorAll('.logo-item');
             let currentIndex = 0;
-            
-            // Function to activate next logo
+
             function activateNextLogo() {
                 // Remove active class from all logos
-                logoItems.forEach(item => {
-                    item.classList.remove('active');
-                });
+                logoItems.forEach(item => item.classList.remove('active'));
                 
                 // Add active class to current logo
                 logoItems[currentIndex].classList.add('active');
@@ -458,12 +425,9 @@
                 // Move to next logo
                 currentIndex = (currentIndex + 1) % logoItems.length;
             }
-            
-            // Start the rotation (3 seconds interval)
-            setInterval(activateNextLogo, 3000);
-            
-            // Initialize first logo as active
-            activateNextLogo();
+
+            // Start the rotation (2 seconds interval)
+            setInterval(activateNextLogo, 2000);
         });
     </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiểm Tra Tốc Độ Gõ - KJC Tools</title>
+    <title>Kiểm Tra Tốc Độ Đánh Máy - Test Đánh Máy KJC</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -25,15 +25,26 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            padding-top: 120px;
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Header Styles */
+       /* Header Styles */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 0;
+            position: fixed; /* <-- thay absolute bằng fixed */
+            top: 20px;
+            left: 200px;
+            right: 200px;
+            padding: 10px 30px;
+            z-index: 2;
         }
 
         .logo-container {
@@ -43,18 +54,17 @@
         }
 
         .logo {
-            width: 50px;
+            width: 100px;
             height: 50px;
-            border-radius: 10px;
-            object-fit: cover;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            object-fit: contain;
+            display: block;
         }
 
         .logo-text {
             font-size: 24px;
             font-weight: 600;
             color: #fff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         nav ul {
@@ -73,6 +83,7 @@
             padding: 8px 16px;
             border-radius: 20px;
             transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
         nav a:hover {
@@ -83,62 +94,72 @@
             background-color: rgba(255,255,255,0.3);
         }
 
+
         /* Typing Test Styles */
         .typing-container {
-            background-color: rgba(255,255,255,0.9);
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            max-width: 900px;
-            margin: 30px auto;
-            position: relative;
-        }
-
-        .timer {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: rgba(255,255,255,0.9);
-            padding: 10px 20px;
+            background-color: rgba(255,255,255,0.95);
             border-radius: 20px;
-            font-size: 18px;
-            font-weight: 500;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            z-index: 100;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            max-width: 900px;
+            margin-top: 30px;
+            width: 95%;
+            position: relative;
+            width: 100%;
         }
 
         .typing-area {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
         }
 
         .text-display {
             background-color: rgba(255,255,255,0.7);
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 30px;
             border: 1px solid rgba(0,0,0,0.1);
             font-size: 22px;
             line-height: 1.8;
-            min-height: 160px;
+            height: 140px;
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 4px;
             align-items: flex-start;
-            max-height: 160px;
             overflow: hidden;
+            position: relative;
+            transition: none;
         }
 
         .word {
-            padding: 5px 8px;
+            padding: 3px 5px;
             border-radius: 4px;
-            transition: all 0.2s ease;
             white-space: nowrap;
+            margin: 1px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        
+        .word.current {
+            background-color: #4A90E2;
+            color: white;
+            box-shadow: 0 2px 4px rgba(74,144,226,0.3);
+        }
+
+        .word.correct {
+            color: #4CAF50;
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .word.incorrect {
+            color: #F44336;
+            background-color: rgba(244, 67, 54, 0.1);
         }
 
         .word.current {
             background-color: #4A90E2;
             color: white;
+            box-shadow: 0 2px 4px rgba(74,144,226,0.3);
         }
 
         .word.correct {
@@ -157,20 +178,33 @@
 
         .input-area {
             background-color: rgba(255,255,255,0.7);
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 12px;
             border: 1px solid rgba(0,0,0,0.1);
-            min-height: 80px;
+            margin-top: 10px;
+        }
+
+        /* Row that contains the input and the retry button */
+        .input-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
         }
 
         .typing-input {
-            width: 100%;
-            padding: 15px;
+            flex: 1;
+            padding: 12px 14px;
             font-size: 18px;
             border: 1px solid rgba(0,0,0,0.2);
             border-radius: 8px;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
+        }
+
+        /* Inline variant for side-btn used inside the input row */
+        .side-btn.inline {
+            padding: 10px 16px;
+            white-space: nowrap;
         }
 
         .typing-input:focus {
@@ -184,8 +218,8 @@
             display: flex;
             justify-content: space-around;
             background: rgba(255,255,255,0.8);
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 20px;
             margin: 20px 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
@@ -208,30 +242,41 @@
             letter-spacing: 0.5px;
         }
 
-        .progress-container {
-            margin: 15px 0;
+        /* Time Progress Bar */
+        .time-progress-container {
+            margin: 25px 0;
         }
 
-        .progress-bar {
-            height: 8px;
+        .time-progress-bar {
+            height: 16px;
             background: #e0e0e0;
-            border-radius: 4px;
+            border-radius: 8px;
             overflow: hidden;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .progress-fill {
+        .time-progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #4CAF50, #8BC34A);
-            width: 0%;
-            transition: width 0.3s ease;
+            width: 100%;
+            transition: width 1s linear;
+            border-radius: 8px;
         }
 
-        .progress-text {
+        .time-progress-text {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
+            font-size: 16px;
             color: #666;
-            margin-top: 5px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .time-remaining {
+            color: #1a237e;
+            font-weight: 600;
+            font-size: 18px;
         }
 
         /* Side Buttons */
@@ -239,7 +284,7 @@
             display: flex;
             gap: 15px;
             justify-content: flex-end;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .side-btn {
@@ -265,6 +310,28 @@
         }
 
         /* Enhanced Result Popup */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(26, 35, 126, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(26, 35, 126, 0.5); }
+            100% { box-shadow: 0 0 5px rgba(26, 35, 126, 0.3); }
+        }
+
         .popup-overlay {
             display: none;
             position: fixed;
@@ -272,92 +339,149 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(5px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .result-popup {
             background: white;
-            border-radius: 16px;
+            border-radius: 24px;
             padding: 0;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            overflow: hidden;
-            animation: slideUp 0.4s ease;
+            max-width: 600px;
+            width: 95%;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.15);
+            max-height: 85vh;
+            overflow: auto;
+            animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            transform-origin: bottom;
+            animation: glow 2s infinite;
         }
 
         .popup-header {
-            background: linear-gradient(135deg, #1a237e, #283593);
+            background: linear-gradient(135deg, #1a237e, #3949ab);
             color: white;
-            padding: 25px;
+            padding: 32px 28px;
             text-align: center;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px 24px 0 0;
         }
 
         .company-logo {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 14px;
+            margin-bottom: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .company-logo:hover {
+            transform: scale(1.02);
         }
 
         .popup-logo {
-            width: 40px;
-            height: 40px;
+            width: 200px;
+            max-width: 60%;
+            height: auto;
             border-radius: 8px;
-            object-fit: cover;
+            object-fit: contain;
+            background: transparent;
+            padding: 0;
+            filter: drop-shadow(0 4px 8px rgba(255,255,255,0.2));
+            display: block;
+            margin: 0 auto;
         }
 
-        .logo-text {
-            font-size: 24px;
+        .popup-header .logo-text {
+            font-size: 22px;
             font-weight: 700;
+            color: white;
+            margin: 0;
         }
 
         .popup-title {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .popup-subtitle {
-            opacity: 0.8;
-            font-size: 14px;
+            opacity: 0.9;
+            font-size: 16px;
         }
 
         .popup-content {
-            padding: 30px;
+            padding: 32px;
+            background: linear-gradient(to bottom, #ffffff, #f8f9fa);
         }
 
+        .popup-content h3 {
+            color: #1a237e;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .popup-content h3:hover {
+            color: #3949ab;
+        }
+
+        /* New Result Stats Grid */
         .result-stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
         .result-stat {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-align: center;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         .result-stat:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        }
+
+        .result-stat::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #1a237e, #3949ab);
         }
 
         .result-value {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 700;
             color: #1a237e;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .result-label {
@@ -365,61 +489,91 @@
             color: #666;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-weight: 500;
         }
 
+        /* Performance Rating */
         .performance-rating {
             text-align: center;
-            margin: 20px 0;
-            padding: 15px;
+            margin: 25px 0;
+            padding: 25px;
             background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
-            border-radius: 10px;
+            border-radius: 16px;
+            border: 1px solid #e1f5fe;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .performance-rating::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #1a237e, #3949ab);
         }
 
         .rating-text {
-            font-size: 18px;
+            font-size: 22px;
             font-weight: 600;
             color: #1a237e;
+            margin-bottom: 12px;
         }
 
         .rating-stars {
-            margin-top: 10px;
-            font-size: 24px;
+            font-size: 32px;
             color: #FFD54F;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
+        /* Popup Actions */
         .popup-actions {
             display: flex;
-            gap: 15px;
+            gap: 16px;
             justify-content: center;
+            margin-top: 24px;
         }
 
         .popup-btn {
             flex: 1;
-            padding: 12px 20px;
+            padding: 16px 24px;
             border: none;
-            border-radius: 8px;
-            font-weight: 500;
+            border-radius: 12px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .popup-btn.primary {
-            background: #1a237e;
+            background: linear-gradient(135deg, #1a237e, #3949ab);
             color: white;
         }
 
         .popup-btn.secondary {
             background: #f5f5f5;
             color: #333;
+            border: 1px solid #e0e0e0;
         }
 
         .popup-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .popup-btn.primary:hover {
+            background: linear-gradient(135deg, #3949ab, #1a237e);
+        }
+
+        .popup-btn.secondary:hover {
+            background: #e8e8e8;
         }
 
         /* Animations */
@@ -543,7 +697,9 @@
         /* Responsive Design */
         @media (max-width: 768px) {
             .text-display {
-                font-size: 18px;
+                font-size: 20px;
+                padding: 25px;
+                height: 120px;
             }
             
             .side-buttons {
@@ -583,17 +739,34 @@
                 gap: 15px;
             }
             
-            .timer {
-                position: relative;
-                top: auto;
-                right: auto;
-                margin-bottom: 20px;
-                display: inline-block;
-            }
-            
             .footer-content {
                 flex-direction: column;
                 gap: 30px;
+            }
+
+            .popup-logo {
+                width: 100px;
+                height: auto;
+            }
+
+            .logo-text {
+                font-size: 24px;
+            }
+
+            .popup-title {
+                font-size: 24px;
+            }
+
+            .result-value {
+                font-size: 28px;
+            }
+
+            .rating-text {
+                font-size: 18px;
+            }
+
+            .rating-stars {
+                font-size: 28px;
             }
         }
     </style>
@@ -602,23 +775,21 @@
     <div class="container">
         <header>
             <div class="logo-container">
-                <img src="https://i.imgur.com/Y9iMYsI.png" alt="KJC Logo" class="logo">
-                <div class="logo-text">KJC Tools</div>
+                <img src="Public/Logo.png" alt="KJC Logo" class="logo">
+                <div class="logo-text">Test Đánh Máy KJC</div>
             </div>
             <nav>
                 <ul>
                     <li><a href="index.html">Trang Chủ</a></li>
-                    <li><a href="typing.html" class="active">Kiểm Tra Tốc Độ Gõ</a></li>
-                    <li><a href="cv.html">Tạo CV</a></li>
+                    <li><a href="typing.html" class="active">Kiểm Tra Đánh Máy</a></li>
+                    <li><a href="cv.html">Tạo CV Xin Việc</a></li>
                 </ul>
             </nav>
         </header>
 
         <div class="typing-container">
-            <div class="timer" id="timer">60s</div>
-            
             <h2>Kiểm Tra Tốc Độ Gõ Tiếng Việt</h2>
-            <p>Gõ các từ dưới đây càng nhanh và chính xác càng tốt. Chỉ hiển thị 2 dòng từ, khi gõ hết sẽ tự động thêm dòng mới.</p>
+            <p>Hãy gõ nội dung dưới đây càng nhanh, càng chính xác, càng tốt để hoàn thành hồ sơ ứng tuyển và Liên Minh Quốc Tế KJC bạn nhé!</p>
             
             <!-- Real-time Stats -->
             <div class="real-time-stats">
@@ -640,15 +811,14 @@
                 </div>
             </div>
 
-            <!-- Progress Bar -->
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill"></div>
+            <!-- Time Progress Bar -->
+            <div class="time-progress-container">
+                <div class="time-progress-bar">
+                    <div class="time-progress-fill" id="time-progress-fill"></div>
                 </div>
-                <div class="progress-text">
-                    <span>Bắt đầu</span>
-                    <span id="progress-percent">0%</span>
-                    <span>Hoàn thành</span>
+                <div class="time-progress-text">
+                    <span>Thời gian còn lại:</span>
+                    <span class="time-remaining" id="time-remaining">60 giây</span>
                 </div>
             </div>
             
@@ -657,20 +827,17 @@
                     <!-- Words will be inserted by JavaScript -->
                 </div>
                 
-                <div class="input-area">
-                    <input type="text" class="typing-input" id="typing-input" placeholder="Bắt đầu gõ từ đầu tiên...">
-                </div>
+                    <div class="input-area">
+                        <div class="input-row">
+                            <input type="text" class="typing-input" id="typing-input" placeholder="Bắt đầu gõ từ đầu tiên...">
+                            <button class="side-btn inline" id="retry-btn">
+                                <span>🔄</span> Thử Lại
+                            </button>
+                        </div>
+                    </div>
             </div>
 
-            <!-- Side Buttons -->
-            <div class="side-buttons">
-                <button class="side-btn" id="retry-btn">
-                    <span>🔄</span> Thử Lại
-                </button>
-                <a href="index.html" class="side-btn">
-                    <span>🏠</span> Về Trang Chủ
-                </a>
-            </div>
+            <!-- Side Buttons removed: retry moved next to input -->
         </div>
     </div>
 
@@ -679,28 +846,36 @@
         <div class="result-popup">
             <div class="popup-header">
                 <div class="company-logo">
-                    <img src="https://i.imgur.com/Y9iMYsI.png" alt="KJC Logo" class="popup-logo">
-                    <div class="logo-text">KJC Tools</div>
+                    <img src="Public/Logo.png" alt="KJC Logo" class="popup-logo">
                 </div>
                 <h2 class="popup-title">Kết Quả Kiểm Tra</h2>
                 <p class="popup-subtitle">Phân tích hiệu suất gõ của bạn</p>
             </div>
             <div class="popup-content">
+                <h3>Thống Kê Chi Tiết</h3>
                 <div class="result-stats">
                     <div class="result-stat">
-                        <div class="result-value" id="result-wpm">0</div>
-                        <div class="result-label">WPM</div>
+                        <div class="result-value" id="result-wpm">
+                            <span>📊</span> 0
+                        </div>
+                        <div class="result-label">Tốc độ gõ (WPM)</div>
                     </div>
                     <div class="result-stat">
-                        <div class="result-value" id="result-accuracy">0%</div>
+                        <div class="result-value" id="result-accuracy">
+                            <span>🎯</span> 0%
+                        </div>
                         <div class="result-label">Độ chính xác</div>
                     </div>
                     <div class="result-stat">
-                        <div class="result-value" id="result-correct">0</div>
+                        <div class="result-value" id="result-correct">
+                            <span>✅</span> 0
+                        </div>
                         <div class="result-label">Từ đúng</div>
                     </div>
                     <div class="result-stat">
-                        <div class="result-value" id="result-errors">0</div>
+                        <div class="result-value" id="result-errors">
+                            <span>❌</span> 0
+                        </div>
                         <div class="result-label">Từ sai</div>
                     </div>
                 </div>
@@ -712,7 +887,7 @@
 
                 <div class="popup-actions">
                     <button class="popup-btn primary" id="popup-retry">
-                        <span>🔄</span> Thử Lại
+                        <span>🔄</span> Thử Lại Ngay
                     </button>
                     <button class="popup-btn secondary" id="popup-home">
                         <span>🏠</span> Về Trang Chủ
@@ -726,23 +901,16 @@
     <footer class="typing-footer">
         <div class="footer-content">
             <div class="footer-section">
-                <h3>Về KJC Tools</h3>
-                <p>Cung cấp các công cụ năng suất miễn phí giúp bạn làm việc hiệu quả hơn và phát triển kỹ năng cá nhân.</p>
-                <div class="social-links">
-                    <a href="#" title="Facebook">📘</a>
-                    <a href="#" title="Twitter">🐦</a>
-                    <a href="#" title="LinkedIn">💼</a>
-                    <a href="#" title="GitHub">💻</a>
-                </div>
+                <h3>Về Test Đánh Máy KJC</h3>
+                <p>Cung cấp các công cụ hỗ trợ ứng tuyển và làm việc tại Liên Minh Quốc Tế KJC</p>
             </div>
             
             <div class="footer-section">
                 <h3>Công Cụ</h3>
                 <ul class="footer-links">
+                    <li><a href="index.html">Trang Chủ</a></li>
                     <li><a href="typing.html">Kiểm tra tốc độ gõ</a></li>
                     <li><a href="cv.html">Tạo CV chuyên nghiệp</a></li>
-                    <li><a href="#">Quản lý công việc</a></li>
-                    <li><a href="#">Theo dõi thời gian</a></li>
                 </ul>
             </div>
             
@@ -759,45 +927,140 @@
             <div class="footer-section">
                 <h3>Liên Hệ</h3>
                 <div class="footer-contact">
-                    <p>📧 support@kjctools.com</p>
-                    <p>📞 +84 123 456 789</p>
-                    <p>🏢 123 Đường ABC, Quận 1, TP.HCM</p>
+                    <p>Email: admin@kjc.com</p>
+                    <p>SĐT: 0815248322</p>
+                    <p>Địa Chỉ: 1M Đường Số 12, Tân Thuận Tây, Quận 7, Thành phố Hồ Chí Minh.</p>
                 </div>
             </div>
         </div>
         
         <div class="footer-bottom">
-            <p>© 2025 KJC Tools. Tất cả các quyền được bảo lưu.</p>
+            <p>© 2025 KJC Test Đánh Máy. Tất cả các quyền được bảo lưu.</p>
         </div>
     </footer>
 
     <script>
         // Vietnamese single words for typing test
         const vietnameseWords = [
-            "xin", "chào", "cảm", "ơn", "tốt", "nghiệp", "đại", "học", "công", "việc",
-            "chuyên", "nghiệp", "kỹ", "năng", "kinh", "nghiệm", "phát", "triển", "công", "nghệ",
-            "thành", "công", "hạnh", "phúc", "học", "tập", "làm", "việc", "sức", "khỏe",
-            "gia", "đình", "bạn", "bè", "đồng", "nghiệp", "du", "lịch", "khám", "phá",
-            "thể", "thao", "giải", "trí", "âm", "nhạc", "nghệ", "thuật", "thực", "phẩm",
-            "dinh", "dưỡng", "môi", "trường", "thiên", "nhiên", "văn", "hóa", "truyền", "thống",
-            "kinh", "tế", "tài", "chính", "giáo", "dục", "đào", "tạo", "y", "tế",
-            "giao", "thông", "vận", "tải", "xây", "dựng", "kiến", "trúc", "nông", "nghiệp",
-            "nông", "thôn", "công", "nghiệp", "sản", "xuất", "thương", "mại", "dịch", "vụ",
-            "khách", "sạn", "ngân", "hàng", "bảo", "hiểm", "an", "sinh", "pháp", "luật",
-            "công", "lý", "an", "ninh", "trật", "tự", "quốc", "phòng", "đối", "ngoại",
-            "hợp", "tác", "khoa", "học", "nghiên", "cứu", "sáng", "tạo", "thông", "tin",
-            "truyền", "thông", "internet", "kết", "nối", "điện", "thoại", "thông", "minh",
-            "máy", "tính", "phần", "mềm", "ứng", "dụng", "tiện", "ích", "website", "trang",
-            "mạng", "xã", "hội", "thương", "hiệu", "uy", "tín", "khách", "hàng", "sản", "phẩm",
-            "chất", "lượng", "cạnh", "tranh", "thị", "trường", "chiến", "lược", "kế", "hoạch",
-            "quản", "lý", "lãnh", "đạo", "nhân", "viên", "lương", "thưởng", "phúc", "lợi",
-            "đánh", "giá", "hiệu", "suất", "mục", "tiêu", "kết", "quả", "thách", "thức", "cơ", "hội"
+"xin","chào","cảm","ơn","tốt","nghiệp","đại","học","công","việc",
+"chuyên","nghiệp","kỹ","năng","kinh","nghiệm","phát","triển","công","nghệ",
+"thành","công","hạnh","phúc","học","tập","làm","việc","sức","khỏe",
+"gia","đình","bạn","bè","đồng","nghiệp","du","lịch","khám","phá",
+"thể","thao","giải","trí","âm","nhạc","nghệ","thuật","thực","phẩm",
+"dinh","dưỡng","môi","trường","thiên","nhiên","văn","hóa","truyền","thống",
+"kinh","tế","tài","chính","giáo","dục","đào","tạo","y","tế",
+"giao","thông","vận","tải","xây","dựng","kiến","trúc","nông","nghiệp",
+"sản","xuất","thương","mại","dịch","vụ","khách","sạn","ngân","hàng",
+"bảo","hiểm","an","toàn","pháp","luật","công","lý","an","ninh",
+"trật","tự","quốc","phòng","đối","ngoại","hợp","tác","khoa","học",
+"nghiên","cứu","sáng","tạo","thông","tin","liên","lạc","điện","thoại",
+"máy","tính","ứng","dụng","tiện","ích","trang","mạng","xã","hội",
+"thương","hiệu","uy","tín","khách","hàng","sản","phẩm","chất","lượng",
+"cạnh","tranh","thị","trường","chiến","lược","kế","hoạch","quản","lý",
+"lãnh","đạo","nhân","viên","lương","thưởng","phúc","lợi","đánh","giá",
+"hiệu","suất","mục","tiêu","kết","quả","thách","thức","cơ","hội",
+"thời","gian","tương","lai","hiện","tại","quá","khứ","niềm","tin",
+"hy","vọng","ước","mơ","cuộc","sống","ngày","đêm","sáng","tối",
+"trời","đất","nước","lửa","gió","biển","núi","rừng","hoa","lá",
+"cây","cỏ","mùa","xuân","hạ","thu","đông","chân","tay","mắt",
+"mũi","miệng","tai","đầu","tim","óc","da","xương","máu","cơ",
+"thịt","bụng","vai","lưng","ngực","cổ","bàn","tay","chân","móng",
+"đi","chạy","nhảy","ăn","uống","ngủ","nghỉ","cười","khóc","hát",
+"nói","nghe","đọc","viết","vẽ","chơi","xem","điện","ảnh","phim",
+"truyện","tranh","báo","tin","thời","sự","bản","tin","chính","trị",
+"xã","hội","tự","nhiên","vật","lý","hóa","sinh","toán","học",
+"địa","lý","lịch","sử","văn","học","ngữ","pháp","chính","tả",
+"từ","vựng","tư","duy","sáng","kiến","ý","tưởng","thực","hành",
+"lý","thuyết","trải","nghiệm","rèn","luyện","kiến","thức","học","sinh",
+"sinh","viên","giáo","viên","giảng","viên","thầy","cô","trường","lớp",
+"bảng","bút","vở","sách","bài","thi","kiểm","tra","kỳ","thi",
+"điểm","số","bằng","cấp","chứng","chỉ","học","bổng","thư","viện",
+"phòng","thí","nghiệm","máy","chiếu","máy","in","ghế","bàn","đèn",
+"tủ","cửa","sổ","bức","tường","nền","nhà","sàn","mái","trần",
+"đường","phố","xe","máy","ô","tô","xe","đạp","xe","buýt",
+"tàu","bay","tàu","hỏa","bến","xe","sân","bay","cảng","biển",
+"người","lớn","trẻ","em","thanh","niên","người","già","cha","mẹ",
+"anh","chị","em","vợ","chồng","con","cháu","ông","bà","bạn",
+"thân","người","yêu","đồng","nghiệp","hàng","xóm","láng","giềng","thầy","trò",
+"thầy","thuốc","bác","sĩ","y","tá","bệnh","nhân","thuốc","men",
+"bệnh","viện","phòng","khám","sức","khỏe","điều","dưỡng","tiêm","chủng",
+"vaccine","xét","nghiệm","máy","đo","huyết","áp","nhiệt","độ","máu",
+"chẩn","đoán","điều","trị","phẫu","thuật","dụng","cụ","y","khoa",
+"cấp","cứu","xe","cứu","thương","tai","nạn","phòng","cháy","chữa",
+"cháy","cảnh","sát","cứu","hỏa","bộ","đội","biên","phòng","hải",
+"quan","hành","chính","công","an","chứng","minh","căn","cước","hộ",
+"chiếu","giấy","phép","xe","bằng","lái","sổ","hộ","khẩu","đăng",
+"ký","điện","nước","thuế","thu","chi","doanh","thu","lợi","nhuận",
+"kinh","doanh","bán","hàng","mua","hàng","quảng","cáo","truyền","thông",
+"chiến","dịch","khuyến","mãi","giảm","giá","ưu","đãi","đơn","hàng",
+"giao","hàng","thanh","toán","chuyển","khoản","tiền","mặt","ví","điện",
+"tử","hóa","đơn","phiếu","xuất","nhập","kho","vận","chuyển","bốc",
+"xếp","đóng","gói","bao","bì","tem","nhãn","mã","số","mã",
+"vạch","thông","báo","tin","nhắn","cuộc","gọi","liên","hệ","kết",
+"bạn","giao","lưu","học","hỏi","chia","sẻ","trao","đổi","thảo",
+"luận","hội","thảo","họp","hội","nghị","sự","kiện","lễ","kỷ",
+"niệm","lễ","khai","giảng","lễ","tốt","nghiệp","lễ","cưới","sinh",
+"nhật","lễ","tết","năm","mới","trung","thu","giáng","sinh","quốc",
+"khánh","quốc","tế","lao","động","phụ","nữ","thiếu","nhi","cha",
+"mẹ","gia","đình","bạn","bè","thăm","hỏi","chúc","mừng","chụp",
+"ảnh","quay","video","ghi","âm","thư","từ","email","tin","tức",
+"báo","chí","tạp","chí","truyền","hình","phát","thanh","loa","đài",
+"phim","ảnh","kịch","sân","khấu","vẽ","tranh","điêu","khắc","ca",
+"hát","nhảy","múa","đàn","ghita","piano","violin","nhạc","cụ",
+"bản","nhạc","giai","điệu","tiết","tấu","âm","thanh","ánh","sáng",
+"màu","sắc","hình","ảnh","chuyển","động","tốc","độ","thời","gian",
+"giây","phút","giờ","ngày","tháng","năm","mùa","xuân","hạ","thu",
+"đông","thời","tiết","mưa","nắng","gió","bão","sấm","chớp","sương",
+"mù","nhiệt","độ","khí","hậu","nước","biển","sông","suối","ao",
+"hồ","đồng","ruộng","vườn","hoa","cây","cỏ","trái","đất","núi",
+"đồi","hang","động","rừng","biển","đảo","sa","mạc","cát","đá",
+"đất","sét","bùn","than","dầu","khí","mỏ","vàng","bạc","kim",
+"cương","ngọc","đá","quý","sắt","thép","đồng","chì","kẽm","gỗ",
+"giấy","nhựa","vải","bông","len","lụa","da","sợi","sành","gốm",
+"sứ","đồ","điện","máy","bơm","đèn","quạt","bếp","nồi","chảo",
+"dao","thớt","muỗng","đũa","chén","bát","đĩa","ly","cốc","ấm",
+"trà","cà","phê","nước","ép","sữa","đường","muối","bột","mì",
+"gạo","thịt","cá","tôm","trứng","rau","củ","quả","canh","cơm",
+"cháo","mì","phở","bún","bánh","kẹo","súp","nướng","chiên","xào",
+"luộc","hấp","rang","nấu","ăn","uống","no","đói","ngon","miệng",
+"thơm","ngậy","mặn","ngọt","chua","cay","đắng","nhạt","ấm","nóng",
+"lạnh","mát","ướt","khô","sạch","bẩn","cao","thấp","dài","ngắn",
+"to","nhỏ","đẹp","xấu","mới","cũ","trẻ","già","đông","ít",
+"nhiều","đầy","vơi","chậm","nhanh","sớm","muộn","gần","xa","trên",
+"dưới","trước","sau","trong","ngoài","trái","phải","giữa","bên","cạnh",
+"ở","đây","kia","đó","này","ấy","kia","ai","gì","nào",
+"đâu","khi","nào","bao","nhiêu","vì","sao","thế","nào","ra",
+"sao","đúng","sai","phải","trái","có","không","chưa","đã","rồi",
+"vẫn","đang","sẽ","nên","cần","muốn","phải","được","bị","cho",
+"làm","dừng","nghĩ","biết","hiểu","tin","nhớ","quên","thấy","nghe",
+"ngửi","nếm","chạm","cảm","nhận","sợ","vui","buồn","tức","giận",
+"hài","lòng","lo","lắng","bình","tĩnh","tự","tin","thành","thật",
+"giản","dị","khiêm","tốn","vui","vẻ","hòa","đồng","tốt","bụng",
+"yêu","thương","quan","tâm","chia","sẻ","giúp","đỡ","bao","dung",
+"tha","thứ","khoan","dung","cảm","thông","tôn","trọng","đoàn","kết",
+"trung","thực","công","bằng","dũng","cảm","kiên","trì","chăm","chỉ",
+"nhiệt","huyết","cần","cù","thông","minh","sáng","suốt","tài","năng",
+"điềm","đạm","kỷ","luật","ngăn","nắp","trật","tự","gọn","gàng",
+"ngăn","chặn","phòng","ngừa","bảo","vệ","giữ","gìn","xây","dựng",
+"phát","triển","đổi","mới","cải","tiến","nâng","cao","mở","rộng",
+"tăng","trưởng","hiệu","quả","năng","suất","thành","tích","thành","tựu",
+"cống","hiến","đóng","góp","hợp","tác","hội","nhập","phát","triển",
+"bền","vững","toàn","cầu","quốc","gia","địa","phương","thành","phố",
+"thị","trấn","làng","xã","ấp","bản","thôn","nhà","nước","chính",
+"phủ","cơ","quan","ban","ngành","đảng","đoàn","hội","đoàn","thanh",
+"niên","thiếu","niên","phụ","nữ","cựu","chiến","binh","nông","dân",
+"công","nhân","viên","chức","doanh","nghiệp","tập","đoàn","công","ty",
+"văn","phòng","phòng","ban","phòng","kinh","doanh","phòng","nhân","sự",
+"phòng","kế","toán","phòng","kỹ","thuật","phòng","bảo","vệ","phòng",
+"nghiên","cứu","phòng","thiết","kế","xưởng","sản","xuất","kho","vận",
+"chuyển","giao","hàng","quản","lý","dự","án","nhân","sự","tài","chính",
+"kế","toán","vật","tư","mua","hàng","bán","hàng","dịch","vụ","hỗ",
+"trợ","kỹ","thuật","chăm","sóc","khách","hàng","bảo","hành","bảo","trì"
         ];
 
         // DOM Elements
         const typingInput = document.getElementById('typing-input');
         const textDisplay = document.getElementById('text-display');
-        const timerElement = document.getElementById('timer');
         const popupOverlay = document.getElementById('result-popup');
         
         // Real-time stats elements
@@ -805,8 +1068,10 @@
         const liveAccuracyElement = document.getElementById('live-accuracy');
         const liveCorrectElement = document.getElementById('live-correct');
         const liveErrorsElement = document.getElementById('live-errors');
-        const progressFill = document.getElementById('progress-fill');
-        const progressPercent = document.getElementById('progress-percent');
+        
+        // Time progress elements
+        const timeProgressFill = document.getElementById('time-progress-fill');
+        const timeRemainingElement = document.getElementById('time-remaining');
         
         // Result elements
         const resultWpmElement = document.getElementById('result-wpm');
@@ -830,23 +1095,19 @@
         let correctWords = 0;
         let completedWords = 0;
         let typedWords = [];
-        const WORDS_PER_LINE = 8; // Số từ mỗi dòng
+        const WORDS_PER_LINE = 10; // Tăng số từ mỗi dòng
         const VISIBLE_LINES = 2; // Số dòng hiển thị
 
         // Initialize the test
         function initTest() {
-            // Generate random words
-            generateRandomWords();
+            // Clear any existing timer
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
             
-            // Initialize visible words (first 2 lines)
-            updateVisibleWords();
-            
-            // Display the words
-            displayWords();
-            
-            // Reset variables
+            // Reset all variables to initial state first
             timeLeft = 60;
-            timerElement.textContent = timeLeft + 's';
             typingInput.value = '';
             typingInput.disabled = false;
             isTimerRunning = false;
@@ -856,17 +1117,30 @@
             totalChars = 0;
             correctWords = 0;
             completedWords = 0;
+            startTime = null;
+            
+            // Important: Clear typed words array completely
             typedWords = [];
             
-            // Reset stats
+            // Generate new words after resetting state
+            generateRandomWords();
+            updateVisibleWords();
+            
+            // Update UI with fresh state
+            displayWords();
             updateLiveStats();
-            updateProgress(0);
+            updateTimeProgress();
             
-            // Hide popup
-            popupOverlay.style.display = 'none';
+            // Reset and hide popup (guard in case element missing)
+            if (popupOverlay) popupOverlay.style.display = 'none';
             
-            // Focus on input
-            typingInput.focus();
+            // Ensure input is enabled and focused
+            typingInput.disabled = false;
+            setTimeout(() => {
+                typingInput.focus();
+                // Double-check that we're showing a clean state
+                displayWords();
+            }, 50);
         }
 
         // Generate random words for the test
@@ -900,12 +1174,18 @@
                 const globalIndex = visibleStartIndex + i;
                 let className = 'word';
                 
-                if (globalIndex === currentWordIndex) {
+                // Only add status classes if we have typed words and are not in initial state
+                if (typedWords.length > 0 || isTimerRunning) {
+                    if (globalIndex === currentWordIndex) {
+                        className += ' current';
+                    } else if (globalIndex < currentWordIndex) {
+                        // Check if word was typed correctly
+                        const isCorrect = typedWords[globalIndex] === allWords[globalIndex];
+                        className += isCorrect ? ' correct' : ' incorrect';
+                    }
+                } else if (globalIndex === 0) {
+                    // Just highlight first word when starting
                     className += ' current';
-                } else if (globalIndex < currentWordIndex) {
-                    // Check if word was typed correctly
-                    const isCorrect = typedWords[globalIndex] === allWords[globalIndex];
-                    className += isCorrect ? ' correct' : ' incorrect';
                 }
                 
                 html += `<span class="${className}">${visibleWords[i]}</span>`;
@@ -918,12 +1198,6 @@
             }
             
             textDisplay.innerHTML = html;
-            
-            // Scroll to current word
-            const currentWordElement = textDisplay.querySelector('.word.current');
-            if (currentWordElement) {
-                currentWordElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
-            }
         }
 
         // Load more words when needed
@@ -955,28 +1229,43 @@
             liveAccuracyElement.textContent = accuracy + '%';
             liveCorrectElement.textContent = correctWords;
             liveErrorsElement.textContent = completedWords - correctWords;
-            
-            // Update progress
-            const progress = (completedWords / allWords.length) * 100;
-            updateProgress(progress);
         }
 
-        // Update progress bar
-        function updateProgress(percent) {
-            progressFill.style.width = percent + '%';
-            progressPercent.textContent = Math.round(percent) + '%';
+        // Update time progress bar
+        function updateTimeProgress() {
+            const progressPercent = (timeLeft / 60) * 100;
+            timeProgressFill.style.width = progressPercent + '%';
+            timeRemainingElement.textContent = timeLeft + ' giây';
+            
+            // Change color based on remaining time
+            if (timeLeft <= 15) {
+                timeProgressFill.style.background = 'linear-gradient(90deg, #F44336, #FF9800)';
+            } else if (timeLeft <= 30) {
+                timeProgressFill.style.background = 'linear-gradient(90deg, #FF9800, #FFEB3B)';
+            } else {
+                timeProgressFill.style.background = 'linear-gradient(90deg, #4CAF50, #8BC34A)';
+            }
         }
 
         // Start the timer
         function startTimer() {
+            // Update progress bar immediately
+            updateTimeProgress();
+
+            // Use a safe interval that never allows timeLeft to go below 0
             timer = setInterval(function() {
-                timeLeft--;
-                timerElement.textContent = timeLeft + 's';
-                
-                if (timeLeft <= 0) {
+                // If timeLeft is 1 or less, set to 0, update and finish
+                if (timeLeft <= 1) {
+                    timeLeft = 0;
+                    updateTimeProgress();
                     clearInterval(timer);
                     finishTest();
+                    return;
                 }
+
+                // Otherwise decrement normally
+                timeLeft = Math.max(0, timeLeft - 1);
+                updateTimeProgress();
             }, 1000);
         }
 
@@ -1011,21 +1300,31 @@
 
         // Finish the test and show results
         function finishTest() {
-            clearInterval(timer);
+            // Ensure interval is cleared and timer visually set to 0
+            if (timer) {
+                clearInterval(timer);
+            }
+
+            // Guarantee timeLeft is zero and update UI
+            timeLeft = 0;
+            updateTimeProgress();
+
+            // Disable input and mark timer as not running
             typingInput.disabled = true;
-            
+            isTimerRunning = false;
+
             const endTime = Date.now();
             const timeTaken = (endTime - startTime) / 1000 / 60; // in minutes
-            
+
             // Calculate WPM using the formula: (correct chars including spaces ÷ 5) / time in minutes
             const wpm = timeTaken > 0 ? Math.round((correctChars / 5) / timeTaken) : 0;
-            
+
             // Calculate accuracy
             const accuracy = totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 0;
-            
+
             // Calculate performance rating
             const rating = calculateRating(wpm, accuracy);
-            
+
             // Display results in popup
             resultWpmElement.textContent = wpm;
             resultAccuracyElement.textContent = accuracy + '%';
@@ -1033,9 +1332,9 @@
             resultErrorsElement.textContent = completedWords - correctWords;
             ratingText.textContent = rating.text;
             ratingStars.textContent = rating.stars;
-            
+
             // Show popup
-            popupOverlay.style.display = 'flex';
+            if (popupOverlay) popupOverlay.style.display = 'flex';
         }
 
         // Event Listeners
@@ -1102,24 +1401,40 @@
             }
         });
 
-        document.getElementById('retry-btn').addEventListener('click', function() {
+        // Retry button handlers with debouncing to prevent double-clicks
+        let isRetrying = false;
+        
+        function handleRetry() {
+            if (isRetrying) return;
+            isRetrying = true;
+            
             initTest();
-        });
+            
+            // Reset retry flag after a delay
+            setTimeout(() => {
+                isRetrying = false;
+            }, 500);
+        }
 
-        document.getElementById('popup-retry').addEventListener('click', function() {
-            initTest();
-        });
+        // Attach event listeners safely (check elements exist)
+        const retryBtn = document.getElementById('retry-btn');
+        const popupRetryBtn = document.getElementById('popup-retry');
+        const popupHomeBtn = document.getElementById('popup-home');
 
-        document.getElementById('popup-home').addEventListener('click', function() {
+        if (retryBtn) retryBtn.addEventListener('click', handleRetry);
+        if (popupRetryBtn) popupRetryBtn.addEventListener('click', handleRetry);
+        if (popupHomeBtn) popupHomeBtn.addEventListener('click', function() {
             window.location.href = 'index.html';
         });
 
-        // Close popup when clicking outside
-        popupOverlay.addEventListener('click', function(e) {
-            if (e.target === popupOverlay) {
-                popupOverlay.style.display = 'none';
-            }
-        });
+        // Close popup when clicking outside (if overlay exists)
+        if (popupOverlay) {
+            popupOverlay.addEventListener('click', function(e) {
+                if (e.target === popupOverlay) {
+                    popupOverlay.style.display = 'none';
+                }
+            });
+        }
 
         // Initialize the test when page loads
         window.addEventListener('load', initTest);
